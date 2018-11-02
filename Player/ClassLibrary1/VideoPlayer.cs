@@ -10,17 +10,20 @@ namespace GenericPlayer
     public class VideoPlayer : IPlayer
     {
         public List<Video> videoToPlay = new List<Video>();
+        public ISkin actualSkin { get; set; }
+        public PlayerProperties properties { get; set; }
         private bool playOrNot = false;
-        private int numVideo;
-        public int NumVideo
+        private int numItem;
+        public bool isLocked { get; set; }
+        public int NumItem
         {
             get
-            { return numVideo; }
+            { return numItem; }
             set
             {
-                if (value >= videoToPlay.Count - 1) { numVideo = videoToPlay.Count - 1; }
-                else if (value < 0) { numVideo = 0; }
-                else { numVideo = value; }
+                if (value >= videoToPlay.Count - 1) { numItem = videoToPlay.Count - 1; }
+                else if (value < 0) { numItem = 0; }
+                else { numItem = value; }
             }
         }
         public void Clear()
@@ -28,22 +31,24 @@ namespace GenericPlayer
             videoToPlay.Clear();
         }
 
-        public void Play<T>(T item) where T : Item
+        public void Play(int numItem)
         {
             playOrNot = true;
-            Console.WriteLine(item.itemName);
+            actualSkin.NewScreen();
+            actualSkin.Render(videoToPlay[numItem].itemName);
+            actualSkin.Render(GetData(videoToPlay[numItem]));
         }
 
         public void PlayNext()
         {
-            if (numVideo + 1 < videoToPlay.Count && playOrNot == true) { numVideo++; }
-            if (playOrNot) { Play(videoToPlay[numVideo]); }
+            if (numItem + 1 < videoToPlay.Count && playOrNot == true) { numItem++; }
+            if (playOrNot) { Play(numItem); }
         }
 
         public void PlayPrevious()
         {
-            if (numVideo - 1 >= 0 && playOrNot == true) { numVideo--; }
-            if (playOrNot) { Play(videoToPlay[numVideo]); }
+            if (numItem - 1 >= 0 && playOrNot == true) { numItem--; }
+            if (playOrNot) { Play(numItem); }
         }
 
         public void SearchItems()

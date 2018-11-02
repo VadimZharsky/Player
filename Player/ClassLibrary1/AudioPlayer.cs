@@ -12,40 +12,57 @@ namespace GenericPlayer
     {
         public List<Song> songsToPlay = new List<Song>();
         private bool playOrNot = false;
-        private int numSong;
+        public ISkin actualSkin { get; set; }
+        public PlayerProperties properties { get; set; }
+        public bool isLocked { get; set; }
+        private int numItem;
 
-        public int NumSong
+        public int NumItem
         {
             get
-            { return numSong; }
+            { return numItem; }
             set
             {
-                if (value >= songsToPlay.Count - 1) { numSong = songsToPlay.Count - 1; }
-                else if (value < 0) { numSong = 0; }
-                else { numSong = value; }
+                if (value >= songsToPlay.Count - 1) { numItem = songsToPlay.Count - 1; }
+                else if (value < 0) { numItem = 0; }
+                else { numItem = value; }
             }
         }
+        public bool IsLocked
+        {
+            get { return isLocked; }
+            set { isLocked = properties.isLocked; }
+        }
+
+        
+
         public void Clear()
         {
             songsToPlay.Clear();
         }
 
-        public void Play<T>(T item)where T:Item
+        public void Play(int numItem)
         {
-            playOrNot = true;
-            Console.WriteLine(item.itemName);
+            if (!properties.isLocked)
+            {
+                playOrNot = true;
+                actualSkin.NewScreen();
+                actualSkin.Render(songsToPlay[numItem].itemName);
+                actualSkin.Render(GetData(songsToPlay[numItem]));
+            }
+            
         }
 
         public void PlayNext()
         {
-            if (numSong + 1 < songsToPlay.Count && playOrNot == true) { numSong++; }
-            if (playOrNot) { Play(songsToPlay[numSong]); }
+            if (numItem + 1 < songsToPlay.Count && playOrNot == true) { numItem++; }
+            if (playOrNot) { Play(numItem); }
         }
 
         public void PlayPrevious()
         {
-            if (numSong - 1 >= 0 && playOrNot == true) { NumSong--; }
-            if (playOrNot) { Play(songsToPlay[numSong]); }
+            if (numItem - 1 >= 0 && playOrNot == true) { numItem--; }
+            if (playOrNot) { Play(numItem); }
         }
 
         public void SearchItems()

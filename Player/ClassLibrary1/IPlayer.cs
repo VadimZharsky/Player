@@ -8,8 +8,11 @@ namespace GenericPlayer
 {
     interface IPlayer
     {
+        ISkin actualSkin { get; set; }
+        PlayerProperties properties { get; set; }
+        bool isLocked { get; set; }
         void UploadItems<T>(T item) where T : Item;
-        void Play<T>(T item) where T:Item;
+        void Play(int numItem);
         void PlayNext();
         void PlayPrevious();
         void Stop();

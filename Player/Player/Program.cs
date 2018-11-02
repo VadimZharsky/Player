@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Xml;
+using System.Xml.Serialization;
 using GenericPlayer;
 
 namespace Player
@@ -16,17 +19,29 @@ namespace Player
             UploadSongs(songs);
             var actualSkin = SkinsMaker();
             AudioPlayer audio = new AudioPlayer();
+            audio.actualSkin = actualSkin;
+            PlayerProperties prop = new PlayerProperties();
+            audio.properties = prop;
+            //audio.properties.LockPlay();
+            
             foreach (Song song in songs)
             {
-                audio.UploadItems(song);
+                audio.UploadItems(song);    
             }
-            foreach (Song song in songs)
+            audio.ShuffleItems();
+            for (int i = 0; i < songs.Count; i++)
             {
-                audio.Play(song);
+                audio.Play(i);
+                //Thread.Sleep(1000);
             }
-            audio.PlayPrevious();
+            audio.PlayNext();
+            var newPlaylist = audio.songsToPlay;
+            GetXMLFromObject(newPlaylist);
+            //GetAnObjFromXML();
             Console.ReadKey();
         }
+
+        
 
         private static ISkin SkinsMaker()
         {
@@ -68,6 +83,32 @@ namespace Player
             songs[5].lyrics = "et l'on s'aimera encore, lorsque l'amour sera mort";
             songs[6].lyrics = "";
             songs[7].lyrics = "Hylätty. Sumun kuristama. Ilman sielua";
+        }
+        public static void GetXMLFromObject(List<Song>songs)
+        {
+
+            XmlSerializer xs = new XmlSerializer(typeof(List<Song>)) ;
+            TextWriter txtWriter = new StreamWriter("Playlist.xml");
+            xs.Serialize(txtWriter, songs);
+            txtWriter.Close();
+        }
+        public static Song GetAnObjFromXML()
+        {
+            string xmlFile = "PlayList.xml";
+            if (!File.Exists(xmlFile))
+            {
+                throw new FileNotFoundException();
+            }
+
+            return DeserializeFromXmlString(File.ReadAllText(xmlFile));
+        }
+        public static Song DeserializeFromXmlString(string xml) 
+        {
+            Song xmlObject = new Song();
+            XmlSerializer xmlSerializer = new XmlSerializer(typeof(Song));
+            StringReader stringReader = new StringReader(xml);
+            xmlObject = (Song)xmlSerializer.Deserialize(stringReader);
+            return xmlObject;
         }
 
     }

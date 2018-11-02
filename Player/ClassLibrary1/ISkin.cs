@@ -4,12 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Player
+namespace GenericPlayer
 {
-    interface ISkin
+    public interface ISkin
     {
         void NewScreen();
         void Render(string text);
+        void Render(Tuple<string, string, string, string, string, string, string> tuple);
+        void Render(Tuple<string, string, string, string, string, string> tuple);
     }
     public class ClassicSkin : ISkin
     {
@@ -21,6 +23,16 @@ namespace Player
         public void Render(string text)
         {
             Console.WriteLine(text);
+        }
+
+        public void Render(Tuple<string, string, string, string, string, string, string> tuple)
+        {
+            Console.WriteLine(tuple);
+        }
+
+        public void Render(Tuple<string, string, string, string, string, string> tuple)
+        {
+            Console.WriteLine(tuple);
         }
     }
     public class ColorSkin : ISkin
@@ -46,6 +58,16 @@ namespace Player
 
             Console.WriteLine(text);
         }
+
+        public void Render(Tuple<string, string, string, string, string, string, string> tuple)
+        {
+            Console.WriteLine(tuple);
+        }
+
+        public void Render(Tuple<string, string, string, string, string, string> tuple)
+        {
+            Console.WriteLine(tuple);
+        }
     }
     public class RandomColorSkin : ISkin
     {
@@ -60,6 +82,16 @@ namespace Player
             Random rnd = new Random();
             Console.BackgroundColor = (ConsoleColor)rnd.Next(1, 16);
             Console.WriteLine(text);
+        }
+
+        public void Render(Tuple<string, string, string, string, string, string, string> tuple)
+        {
+            Console.WriteLine(tuple);
+        }
+
+        public void Render(Tuple<string, string, string, string, string, string> tuple)
+        {
+            Console.WriteLine(tuple);
         }
     }
 }

@@ -43,7 +43,9 @@
   <ItemGroup>
     <Compile Include="AudioPlayer.cs" />
     <Compile Include="IPlayer.cs" />
+    <Compile Include="ISkin.cs" />
     <Compile Include="Item.cs" />
+    <Compile Include="PlayerProperties.cs" />
     <Compile Include="PlaylistExtension.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="VideoPlayer.cs" />
