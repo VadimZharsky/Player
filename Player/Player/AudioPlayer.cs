@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
+using Player.Extension;
+using Player.Skin;
+using Player.Properties;
 
-namespace GenericPlayer
+namespace Player
 {
 
     public class AudioPlayer : IPlayer

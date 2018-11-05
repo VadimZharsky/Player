@@ -41,19 +41,24 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Serialization" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AudioPlayer.cs" />
+    <Compile Include="Extension\PlaylistExtension.cs" />
+    <Compile Include="Extension\XmlWorkExtension.cs" />
+    <Compile Include="Iplayer\IPlayer.cs" />
+    <Compile Include="Iplayer\Item.cs" />
+    <Compile Include="ISkin\ISkin.cs" />
+    <Compile Include="PlayerProperties.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Song.cs" />
+    <Compile Include="Video.cs" />
+    <Compile Include="VideoPlayer.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\ClassLibrary1\GenericPlayer.csproj">
-      <Project>{dfa0f5ed-e94f-4d5d-aed8-1d0769611ef4}</Project>
-      <Name>GenericPlayer</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
