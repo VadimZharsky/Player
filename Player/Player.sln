@@ -4,11 +4,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 15.0.28010.2046
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Player", "Player\Player.csproj", "{343A6486-FAED-43E4-96FC-6E71C75ED839}"
-	ProjectSection(ProjectDependencies) = postProject
-		{DFA0F5ED-E94F-4D5D-AED8-1D0769611EF4} = {DFA0F5ED-E94F-4D5D-AED8-1D0769611EF4}
-	EndProjectSection
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GenericPlayer", "ClassLibrary1\GenericPlayer.csproj", "{DFA0F5ED-E94F-4D5D-AED8-1D0769611EF4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -20,10 +15,6 @@ Global
 		{343A6486-FAED-43E4-96FC-6E71C75ED839}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{343A6486-FAED-43E4-96FC-6E71C75ED839}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{343A6486-FAED-43E4-96FC-6E71C75ED839}.Release|Any CPU.Build.0 = Release|Any CPU
-		{DFA0F5ED-E94F-4D5D-AED8-1D0769611EF4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{DFA0F5ED-E94F-4D5D-AED8-1D0769611EF4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{DFA0F5ED-E94F-4D5D-AED8-1D0769611EF4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{DFA0F5ED-E94F-4D5D-AED8-1D0769611EF4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,47 +1,60 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
+using Player.Extension;
+using Player.Skin;
+using Player.Properties;
 
-namespace GenericPlayer
+namespace Player
 {
-    public class VideoPlayer : IPlayer
+
+    public class AudioPlayer : IPlayer
     {
-        public List<Video> videoToPlay = new List<Video>();
+        public List<Song> songsToPlay = new List<Song>();
+        private bool playOrNot = false;
         public ISkin actualSkin { get; set; }
         public PlayerProperties properties { get; set; }
-        private bool playOrNot = false;
-        private int numItem;
         public bool isLocked { get; set; }
+        private int numItem;
+
         public int NumItem
         {
             get
             { return numItem; }
             set
             {
-                if (value >= videoToPlay.Count - 1) { numItem = videoToPlay.Count - 1; }
+                if (value >= songsToPlay.Count - 1) { numItem = songsToPlay.Count - 1; }
                 else if (value < 0) { numItem = 0; }
                 else { numItem = value; }
             }
         }
+        public bool IsLocked
+        {
+            get { return isLocked; }
+            set { isLocked = properties.isLocked; }
+        }
+
+        
+
         public void Clear()
         {
-            videoToPlay.Clear();
+            songsToPlay.Clear();
         }
 
         public void Play(int numItem)
         {
-            playOrNot = true;
-            actualSkin.NewScreen();
-            actualSkin.Render(videoToPlay[numItem].itemName);
-            actualSkin.Render(GetData(videoToPlay[numItem]));
+            if (!properties.isLocked)
+            {
+                playOrNot = true;
+                actualSkin.NewScreen();
+                actualSkin.Render(songsToPlay[numItem].itemName);
+                actualSkin.Render(GetData(songsToPlay[numItem]));
+            }
+            
         }
 
         public void PlayNext()
         {
-            if (numItem + 1 < videoToPlay.Count && playOrNot == true) { numItem++; }
+            if (numItem + 1 < songsToPlay.Count && playOrNot == true) { numItem++; }
             if (playOrNot) { Play(numItem); }
         }
 
@@ -53,7 +66,7 @@ namespace GenericPlayer
 
         public void SearchItems()
         {
-            if (videoToPlay.Count > 0)
+            if (songsToPlay.Count > 0)
             {
                 Console.WriteLine("search in :\n1.Songs\n2.Artists\n3.years\n4.genres");
                 byte choise = Convert.ToByte(Console.ReadLine());
@@ -75,73 +88,69 @@ namespace GenericPlayer
                 }
                 Console.WriteLine($"Input searching {searchParam} to make a playlist");
                 string searchWord = Convert.ToString(Console.ReadLine());
-                videoToPlay = videoToPlay.SortByVideoList(searchParam, searchWord);
+                songsToPlay = songsToPlay.SortBySongList(searchParam, searchWord);
             }
             else { NoSongs(); }
         }
 
         public void ShuffleItems()
         {
-            if (videoToPlay.Count > 0)
+            if (songsToPlay.Count > 0)
             {
-                videoToPlay = videoToPlay.ShuffleList();
-
+                songsToPlay = songsToPlay.ShuffleList();
+                
             }
             else { NoSongs(); }
         }
 
         public void SortItems()
         {
-            if (videoToPlay.Count > 0)
+            if (songsToPlay.Count > 0)
             {
-                Console.WriteLine("sort by :\n1.Song\n2.Writer\n3.year\n4.genre\n5.Duration");
+                Console.WriteLine("sort by :\n1.Song\n2.Artist\n3.year\n4.genre\n5.Duration");
                 byte choise = Convert.ToByte(Console.ReadLine());
                 switch (choise)
                 {
                     case 1:
-                        videoToPlay = videoToPlay.VideoToPlay(1);
+                        songsToPlay = songsToPlay.SongsToPlay(1);
                         break;
                     case 2:
-                        videoToPlay = videoToPlay.VideoToPlay(2);
+                        songsToPlay = songsToPlay.SongsToPlay(2);
                         break;
                     case 3:
-                        videoToPlay = videoToPlay.VideoToPlay(3);
+                        songsToPlay = songsToPlay.SongsToPlay(3);
                         break;
                     case 4:
-                        videoToPlay = videoToPlay.VideoToPlay(4);
+                        songsToPlay = songsToPlay.SongsToPlay(4);
                         break;
                     case 5:
-                        videoToPlay = videoToPlay.VideoToPlay(5);
+                        songsToPlay = songsToPlay.SongsToPlay(5);
                         break;
                 }
             }
-            else
-            {
-                NoSongs();
-            }
+            else { NoSongs(); }
         }
+
         public void Stop()
         {
             playOrNot = false;
         }
 
-        public void UploadItems<T>(T item) where T : Item
+        public void UploadItems<T>(T item) where T : Item 
         {
-            if (item is Video)
-                videoToPlay.Add(item as Video);
+            if (item is Song)
+                songsToPlay.Add(item as Song);
         }
-
-        Tuple<string, string, string, string, string, string> GetData(Video videoToPlay)
+        Tuple<string, string, string, string, string, string, string> GetData(Song songToPlay)
         {
-
-            var (_, writer, year, genre, subtitles, duration) = videoToPlay;
+            
+            var (_, artist, album, year, genre, lyrics, duration) = songToPlay;
             string inminutes = Convert.ToString((int)duration / 60);
             string inseconds = Convert.ToString((int)duration % 60);
-            return new Tuple<string, string, string, string, string, string>(writer + "\n", year + "\n", genre + "\n",
-                subtitles + "\n", inminutes + " minutes ", inseconds + " seconds\n");
+            return new Tuple<string, string, string, string, string, string, string>(artist + "\n", album + "\n", year + "\n", genre + "\n",
+                lyrics + "\n", inminutes + " minutes ", inseconds + " seconds\n");
         }
         private void NoSongs()
         { Console.WriteLine("there is no any song.please before upload songs"); }
     }
 }
-

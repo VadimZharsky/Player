@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GenericPlayer
+namespace Player.Properties
 {
     public class PlayerProperties
     {
@@ -72,3 +72,4 @@ namespace GenericPlayer
         }
     }
 }
+            

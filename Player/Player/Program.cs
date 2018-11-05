@@ -1,13 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
-using System.Xml;
-using System.Xml.Serialization;
-using GenericPlayer;
+using Player.Extension;
+using Player.Skin;
+using Player.Properties;
 
 namespace Player
 {
@@ -36,13 +32,15 @@ namespace Player
             }
             audio.PlayNext();
             var newPlaylist = audio.songsToPlay;
-            GetXMLFromObject(newPlaylist);
-            //GetAnObjFromXML();
+            //newPlaylist.GetXMLFromObject();
+            List<Song> deserialized = new List<Song>();
+            deserialized = deserialized.GetAnObjFromXML();
+            foreach (Song song in deserialized)
+                Console.WriteLine($"Deserialized songs {song.Genre}");
             Console.ReadKey();
         }
 
         
-
         private static ISkin SkinsMaker()
         {
             var rndSkin = new RandomColorSkin();
@@ -50,16 +48,9 @@ namespace Player
             var classicSkin = new ClassicSkin();
             return rndSkin;
         }
-        public void PlayWithSkin<T>(T actualSkin, string text, string addedInfo) where T : ISkin
-        {
-            actualSkin.NewScreen();
-            actualSkin.Render(text);
-            actualSkin.Render(addedInfo);
-        }
 
         public static void UploadSongs(List<Song> songs)
         {
-
             songs.Add(new Song() { itemName = "sans rémission", artist = new Artist(), year = "1998", duration = 140, Genre = 0 });
             songs.Add(new Song() { itemName = "In the name of Amun", artist = new Artist() { ArtistName = "Nile" }, year = "2007", duration = 251, Genre = Song.Genres.metal });
             songs.Add(new Song() { itemName = "Static Cold", artist = new Artist() { ArtistName = "Frozen Autumn" }, year = "2014", duration = 187, Genre = Song.Genres.Minimalsynth | Song.Genres.wave });
@@ -84,32 +75,5 @@ namespace Player
             songs[6].lyrics = "";
             songs[7].lyrics = "Hylätty. Sumun kuristama. Ilman sielua";
         }
-        public static void GetXMLFromObject(List<Song>songs)
-        {
-
-            XmlSerializer xs = new XmlSerializer(typeof(List<Song>)) ;
-            TextWriter txtWriter = new StreamWriter("Playlist.xml");
-            xs.Serialize(txtWriter, songs);
-            txtWriter.Close();
-        }
-        public static Song GetAnObjFromXML()
-        {
-            string xmlFile = "PlayList.xml";
-            if (!File.Exists(xmlFile))
-            {
-                throw new FileNotFoundException();
-            }
-
-            return DeserializeFromXmlString(File.ReadAllText(xmlFile));
-        }
-        public static Song DeserializeFromXmlString(string xml) 
-        {
-            Song xmlObject = new Song();
-            XmlSerializer xmlSerializer = new XmlSerializer(typeof(Song));
-            StringReader stringReader = new StringReader(xml);
-            xmlObject = (Song)xmlSerializer.Deserialize(stringReader);
-            return xmlObject;
-        }
-
     }
 }
