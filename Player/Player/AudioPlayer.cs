@@ -11,8 +11,6 @@ namespace Player
     {
         public List<Song> songsToPlay = new List<Song>();
         private bool playOrNot = false;
-        public ISkin actualSkin { get; set; }
-        public PlayerProperties properties { get; set; }
         public bool isLocked { get; set; }
         private int numItem;
 
@@ -33,38 +31,52 @@ namespace Player
             set { isLocked = properties.isLocked; }
         }
 
-        
-
-        public void Clear()
+        public override void SaveAs()
         {
+            
+            songsToPlay.GetXMLFromObject();
+        }
+        public override void Load()
+        {
+            List<Song> deserialized = new List<Song>();
             songsToPlay.Clear();
+            songsToPlay = deserialized.GetAnObjFromXML();
         }
 
-        public void Play(int numItem)
+        public override void Play(int numItem)
         {
             if (!properties.isLocked)
             {
-                playOrNot = true;
-                actualSkin.NewScreen();
-                actualSkin.Render(songsToPlay[numItem].itemName);
-                actualSkin.Render(GetData(songsToPlay[numItem]));
+                if (songsToPlay.Count > 0)
+                {
+                    playOrNot = true;
+                    actualSkin.NewScreen();
+                    actualSkin.Render(songsToPlay[numItem].itemName);
+                    actualSkin.Render(GetData(songsToPlay[numItem]));
+                }
+                actualSkin.Render("There is no songs");
             }
+                
             
         }
 
-        public void PlayNext()
+        public override void PlayNext()
         {
             if (numItem + 1 < songsToPlay.Count && playOrNot == true) { numItem++; }
             if (playOrNot) { Play(numItem); }
         }
 
-        public void PlayPrevious()
+        public override void PlayPrevious()
         {
             if (numItem - 1 >= 0 && playOrNot == true) { numItem--; }
             if (playOrNot) { Play(numItem); }
         }
+        public override void Clear()
+        {
+            songsToPlay.Clear();
+        }
 
-        public void SearchItems()
+        public override void SearchItems()
         {
             if (songsToPlay.Count > 0)
             {
@@ -93,7 +105,7 @@ namespace Player
             else { NoSongs(); }
         }
 
-        public void ShuffleItems()
+        public override void ShuffleItems()
         {
             if (songsToPlay.Count > 0)
             {
@@ -103,7 +115,7 @@ namespace Player
             else { NoSongs(); }
         }
 
-        public void SortItems()
+        public override void SortItems()
         {
             if (songsToPlay.Count > 0)
             {
@@ -131,12 +143,7 @@ namespace Player
             else { NoSongs(); }
         }
 
-        public void Stop()
-        {
-            playOrNot = false;
-        }
-
-        public void UploadItems<T>(T item) where T : Item 
+        public override void UploadItems<T>(T item)  
         {
             if (item is Song)
                 songsToPlay.Add(item as Song);

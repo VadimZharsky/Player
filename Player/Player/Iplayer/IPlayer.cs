@@ -1,21 +1,30 @@
 ﻿using Player.Skin;
 using Player.Properties;
+using System.Collections.Generic;
 
 namespace Player
 {
-    interface IPlayer
+    public abstract class IPlayer
     {
-        ISkin actualSkin { get; set; }
-        PlayerProperties properties { get; set; }
+        public ISkin actualSkin { get; set; }
+        public PlayerProperties properties { get; set; }
+        private bool playOrNot;
         bool isLocked { get; set; }
-        void UploadItems<T>(T item) where T : Item;
-        void Play(int numItem);
-        void PlayNext();
-        void PlayPrevious();
-        void Stop();
-        void Clear();
-        void ShuffleItems();
-        void SortItems();
-        void SearchItems();
+        List<Item> items = new List<Item>();
+        public abstract void UploadItems<T>(T item) where T : Item;
+        public abstract void Play(int numItem);
+        public abstract void PlayNext();
+        public abstract void PlayPrevious();
+        public abstract void Clear();
+        public abstract void ShuffleItems();
+        public abstract void SortItems();
+        public abstract void SearchItems();
+        public abstract void SaveAs();
+        public abstract void Load();
+
+        public virtual void Stop()
+        {
+            playOrNot = false;
+        }
     }
 }

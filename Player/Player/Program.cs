@@ -30,13 +30,15 @@ namespace Player
                 audio.Play(i);
                 //Thread.Sleep(1000);
             }
+            audio.SaveAs();
             audio.PlayNext();
-            var newPlaylist = audio.songsToPlay;
-            //newPlaylist.GetXMLFromObject();
-            List<Song> deserialized = new List<Song>();
-            deserialized = deserialized.GetAnObjFromXML();
-            foreach (Song song in deserialized)
-                Console.WriteLine($"Deserialized songs {song.Genre}");
+            audio.Load();
+            audio.Clear();
+            for (int i = 0; i < songs.Count; i++)
+            {
+                audio.Play(i);
+                Thread.Sleep(1000);
+            }
             Console.ReadKey();
         }
 

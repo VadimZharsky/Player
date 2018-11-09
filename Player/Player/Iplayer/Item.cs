@@ -9,7 +9,7 @@ namespace Player
     public class Item
     {
         [Flags]
-        public enum Genres
+        public  enum Genres
         {
             notDefined = 0,
             pop = 1,
