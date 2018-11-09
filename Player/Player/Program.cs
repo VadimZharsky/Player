@@ -36,6 +36,7 @@ namespace Player
             audio.Clear();
             for (int i = 0; i < songs.Count; i++)
             {
+
                 audio.Play(i);
                 Thread.Sleep(1000);
             }
