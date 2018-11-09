@@ -42,6 +42,7 @@ namespace Player
                 genre = value;
             }
         }
+
     }
     
 
