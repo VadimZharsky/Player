@@ -56,6 +56,7 @@
     <Compile Include="Song.cs" />
     <Compile Include="Video.cs" />
     <Compile Include="VideoPlayer.cs" />
+    <Compile Include="Visualizer.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

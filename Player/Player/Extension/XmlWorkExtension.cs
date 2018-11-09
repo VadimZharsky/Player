@@ -3,22 +3,23 @@ using System.Collections.Generic;
 using System.IO;
 using System.Xml;
 using System.Xml.Serialization;
+using Player;
+using static Player.Item;
 
 namespace Player.Extension
 {
     static class XmlWorkExtension
     {
-        public static void GetXMLFromObject(this List<Song> songs)
+        public static void GetXMLFromObject(this List<Song> items)
         {
-            XmlSerializer xs = new XmlSerializer(typeof(List<Song>));
             TextWriter txtWriter = new StreamWriter("Playlist.xml");
+            List<Song> songs = items as List<Song>;
+            XmlSerializer xs = new XmlSerializer(typeof(List<Song>));
             xs.Serialize(txtWriter, songs);
             txtWriter.Close();
         }
         public static List<Song> GetAnObjFromXML(this List<Song> deserialized)
         {
-            //XmlDocument doc = new XmlDocument();
-            //doc.Load("Playlist.xml");
             XmlSerializer ser = new XmlSerializer(typeof(Song));
             XmlReader reader = XmlReader.Create("Playlist.xml");
             Song song = null;
@@ -36,7 +37,6 @@ namespace Player.Extension
                     }
                     if (reader.Name == "itemName")
                     {
-                        //Console.WriteLine($"number is");
                         song.itemName = reader.ReadInnerXml();
                         reader.Read();
                     }
@@ -80,38 +80,11 @@ namespace Player.Extension
 
         private static void GetGenre(Song song, string name)
         {
-            switch (name)
+            string[] genresArray = name.Split(' ');
+            foreach (string s in genresArray)
             {
-                case "pop":
-                    song.Genre = Item.Genres.pop;
-                    break;                    
-                case "rock":
-                    song.Genre = Item.Genres.rock;
-                    break;
-                case "metal":
-                    song.Genre = Item.Genres.metal;
-                    break;
-                case "alternative":
-                    song.Genre = Item.Genres.alternative;
-                    break;
-                case "hiphop":
-                    song.Genre = Item.Genres.hiphop;
-                    break;
-                case "edm":
-                    song.Genre = Item.Genres.edm;
-                    break;
-                case "ebm":
-                    song.Genre = Item.Genres.ebm;
-                    break;
-                case "wave":
-                    song.Genre = Item.Genres.wave;
-                    break;
-                case "Minimalsynth":
-                    song.Genre = Item.Genres.Minimalsynth;
-                    break;
-                case "ambient":
-                    song.Genre = Item.Genres.ambient;
-                    break;
+                //DOESN'T WORK RIGHT. ONLY RECEIVE ONE GENRE INSTEAD TWO
+                song.Genre = (Genres)Enum.Parse(typeof(Genres), s);
             }
         }
     }

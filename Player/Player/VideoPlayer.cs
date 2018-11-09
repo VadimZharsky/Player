@@ -9,8 +9,6 @@ namespace Player
     public class VideoPlayer : IPlayer
     {
         public List<Video> videoToPlay = new List<Video>();
-        public ISkin actualSkin { get; set; }
-        public PlayerProperties properties { get; set; }
         private bool playOrNot = false;
         private int numItem;
         public bool isLocked { get; set; }
@@ -25,12 +23,17 @@ namespace Player
                 else { numItem = value; }
             }
         }
-        public void Clear()
+        public override void SaveAs()
+        {
+            //videoToPlay.GetXMLFromObject();
+        }
+        public override void Load()
         {
             videoToPlay.Clear();
+            //videoToPlay = videoToPlay.GetAnObjFromXML();
         }
 
-        public void Play(int numItem)
+        public override void Play(int numItem)
         {
             playOrNot = true;
             actualSkin.NewScreen();
@@ -38,19 +41,23 @@ namespace Player
             actualSkin.Render(GetData(videoToPlay[numItem]));
         }
 
-        public void PlayNext()
+        public override void PlayNext()
         {
             if (numItem + 1 < videoToPlay.Count && playOrNot == true) { numItem++; }
             if (playOrNot) { Play(numItem); }
         }
 
-        public void PlayPrevious()
+        public override void PlayPrevious()
         {
             if (numItem - 1 >= 0 && playOrNot == true) { numItem--; }
             if (playOrNot) { Play(numItem); }
         }
+        public override void Clear()
+        {
+            videoToPlay.Clear();
+        }
 
-        public void SearchItems()
+        public override void SearchItems()
         {
             if (videoToPlay.Count > 0)
             {
@@ -79,7 +86,7 @@ namespace Player
             else { NoSongs(); }
         }
 
-        public void ShuffleItems()
+        public override void ShuffleItems()
         {
             if (videoToPlay.Count > 0)
             {
@@ -89,7 +96,7 @@ namespace Player
             else { NoSongs(); }
         }
 
-        public void SortItems()
+        public override void SortItems()
         {
             if (videoToPlay.Count > 0)
             {
@@ -119,12 +126,8 @@ namespace Player
                 NoSongs();
             }
         }
-        public void Stop()
-        {
-            playOrNot = false;
-        }
 
-        public void UploadItems<T>(T item) where T : Item
+        public override void UploadItems<T>(T item)
         {
             if (item is Video)
                 videoToPlay.Add(item as Video);

@@ -10,16 +10,14 @@ namespace Player
     class Program
     {
         static void Main(string[] args)
-        {
+        { 
+            var actualSkin = SkinsMaker();
+            AudioPlayer audio = new AudioPlayer(); 
+            PlayerProperties prop = new PlayerProperties();
+            Visualizer visualizer = new Visualizer(actualSkin, audio, prop);
+
             List<Song> songs = new List<Song>();
             UploadSongs(songs);
-            var actualSkin = SkinsMaker();
-            AudioPlayer audio = new AudioPlayer();
-            audio.actualSkin = actualSkin;
-            PlayerProperties prop = new PlayerProperties();
-            audio.properties = prop;
-            //audio.properties.LockPlay();
-            
             foreach (Song song in songs)
             {
                 audio.UploadItems(song);    
@@ -28,15 +26,13 @@ namespace Player
             for (int i = 0; i < songs.Count; i++)
             {
                 audio.Play(i);
-                //Thread.Sleep(1000);
+                Thread.Sleep(1000);
             }
+            //audio.SaveAs();
             audio.PlayNext();
-            var newPlaylist = audio.songsToPlay;
-            //newPlaylist.GetXMLFromObject();
-            List<Song> deserialized = new List<Song>();
-            deserialized = deserialized.GetAnObjFromXML();
-            foreach (Song song in deserialized)
-                Console.WriteLine($"Deserialized songs {song.Genre}");
+            audio.SortItems();
+            //audio.Load();
+            audio.Clear();
             Console.ReadKey();
         }
 
@@ -46,7 +42,7 @@ namespace Player
             var rndSkin = new RandomColorSkin();
             var colorSkin = new ColorSkin() { SetColor = 3 };
             var classicSkin = new ClassicSkin();
-            return rndSkin;
+            return colorSkin;
         }
 
         public static void UploadSongs(List<Song> songs)
@@ -75,5 +71,6 @@ namespace Player
             songs[6].lyrics = "";
             songs[7].lyrics = "Hylätty. Sumun kuristama. Ilman sielua";
         }
+        
     }
 }

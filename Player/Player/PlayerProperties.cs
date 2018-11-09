@@ -8,6 +8,8 @@ namespace Player.Properties
 {
     public class PlayerProperties
     {
+        public event PlayerHandler volumeChanged;
+        public event PlayerHandler playerLocked;
         private double volume;
         public bool isLocked = false;
         private bool isPlaying = false;
@@ -20,7 +22,11 @@ namespace Player.Properties
                 if (value > 0)
                 {
                     if (value > 100) { volume = 100; }
-                    else { volume = value; }
+                    else
+                    {
+                        volume = value;
+                        volumeChanged?.Invoke($"volume changed at {volume}");
+                    }
                 }
                 else { volume = 0; }
             }
@@ -37,39 +43,20 @@ namespace Player.Properties
         }
         public bool LockPlay()
         {
+            playerLocked?.Invoke("player was locked");
             return isLocked = true;
         }
         public bool UnlockPlay()
         {
+            playerLocked?.Invoke("player was unlocked");
             return isLocked = false;
         }
-        public bool Play()
-        {
-            if (isLocked == true)
-            {
-                Texter("Play mode is unavaible while lock mode");
-                return isPlaying = true;
-            }
-            else
-            {
-                Texter("Playmode is activated");
-                return isPlaying = false;
-            }
-        }
+
         public bool IsPlaying()
         {
             return (isPlaying == false) ? true : false;
         }
-        public bool Stop()
-        {
-            Texter("Playmode is interrupted");
-            return isPlaying = false;
 
-        }
-        private static void Texter(string str)
-        {
-            //Console.WriteLine(str);
-        }
     }
 }
             
