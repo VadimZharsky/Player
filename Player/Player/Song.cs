@@ -16,7 +16,7 @@ namespace Player
         public Album album { get; set; }
         [System.Xml.Serialization.XmlElement("lyrics")]
         public string lyrics { get; set; }
-
+        
 
         public void Deconstruct(out string Name, out string artistName, out string AlbumName, out string Year, out string Genr, out string text, out double Duration)
         {

@@ -28,7 +28,8 @@ namespace Player
         private Genres genre;
         public double duration { get; set; }
         public bool like { get; set; }
-
+        public string path;
+        public string extension;
         public Genres Genre
         {
             get
