@@ -8,7 +8,7 @@ using System.IO;
 
 namespace Player
 {
-    class Program
+    static class Program
     {
         static void Main(string[] args)
         {    
@@ -18,7 +18,7 @@ namespace Player
             {
                 Console.WriteLine(song.extension);
             }
-            WavPlayer.PlayAsync(uploaded);
+            WavPlayer.Play(uploaded);
 
             //var actualSkin = SkinsMaker();
             //AudioPlayer audio = new AudioPlayer();
@@ -44,7 +44,7 @@ namespace Player
             //}
             Console.ReadKey();
         }
-        public  void getMessage(string str)
+        public static void getMessage(string str)
         {
             Console.WriteLine(str);
         }

@@ -3,30 +3,52 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Media;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Player
 {
     class WavPlayer : SoundPlayer
     {
-        public event EventHandler dev;
-        public static void PlayAsync(List<Song> songs)
+        public delegate void WavHandler(string str);
+        public static event WavHandler alarm;
+
+        public static async void Play(List<Song> songs)
         {
-            foreach (Song song in songs)
+            alarm += Program.getMessage;
+            await PlayAsync(songs);
+            
+            
+
+        }
+        private static async Task PlayAsync(List<Song> songs)
+        {
+            var task = new Task(() =>
             {
-                var task = new Task(() =>
+                foreach (Song song in songs)
                 {
                     SoundPlayer player = new System.Media.SoundPlayer(GetFullPath(song));
-                    player.PlaySync();
-                    //dev?.Invoke("ssdf");
-                    Task.Delay(1000).Wait();
-                    player.Dispose();
-                });
-                task.Start();
-                task.Wait();    
-            }
-          
+                    try
+                    {
+                        player.PlaySync();
+                        alarm?.Invoke($"now playing is {song.itemName}");
+                        alarm?.Invoke($"{Thread.CurrentThread.ManagedThreadId}");
+                        Thread.Sleep(1000);
+                        //player.Dispose();
+                        
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e);
+                        Console.ReadKey();
+                    }
+                }
+            });
+            
+            task.Start();
+            await task;
         }
+
         private static string GetFullPath(Song song)
         {
             return $"{song.path}\\{song.itemName}{song.extension}";
