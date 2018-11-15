@@ -50,15 +50,54 @@
     <Compile Include="Iplayer\IPlayer.cs" />
     <Compile Include="Iplayer\Item.cs" />
     <Compile Include="ISkin\ISkin.cs" />
+    <Compile Include="OldestSongs.cs" />
     <Compile Include="PlayerProperties.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Song.cs" />
     <Compile Include="Video.cs" />
     <Compile Include="VideoPlayer.cs" />
+    <Compile Include="Visualiser.cs" />
+    <Compile Include="WavPlayer.cs">
+      <SubType>Component</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Waves\chimes.wav" />
+    <Content Include="Waves\chord.wav" />
+    <Content Include="Waves\ding.wav" />
+    <Content Include="Waves\ir_begin.wav" />
+    <Content Include="Waves\ir_end.wav" />
+    <Content Include="Waves\ir_inter.wav" />
+    <Content Include="Waves\notify.wav" />
+    <Content Include="Waves\recycle.wav" />
+    <Content Include="Waves\ringout.wav" />
+    <Content Include="Waves\Speech Disambiguation.wav" />
+    <Content Include="Waves\Speech Misrecognition.wav" />
+    <Content Include="Waves\Speech Off.wav" />
+    <Content Include="Waves\Speech On.wav" />
+    <Content Include="Waves\Speech Sleep.wav" />
+    <Content Include="Waves\tada.wav" />
+    <Content Include="Waves\Windows Balloon.wav" />
+    <Content Include="Waves\Windows Battery Critical.wav" />
+    <Content Include="Waves\Windows Battery Low.wav" />
+    <Content Include="Waves\Windows Critical Stop.wav" />
+    <Content Include="Waves\Windows Default.wav" />
+    <Content Include="Waves\Windows Error.wav" />
+    <Content Include="Waves\Windows Exclamation.wav" />
+    <Content Include="Waves\Windows Feed Discovered.wav" />
+    <Content Include="Waves\Windows Hardware Fail.wav" />
+    <Content Include="Waves\Windows Hardware Insert.wav" />
+    <Content Include="Waves\Windows Hardware Remove.wav" />
+    <Content Include="Waves\Windows Information Bar.wav" />
+    <Content Include="Waves\Windows Logoff Sound.wav" />
+    <Content Include="Waves\Windows Logon Sound.wav" />
+    <Content Include="Waves\Windows Menu Command.wav" />
+    <Content Include="Waves\Windows Minimize.wav" />
+    <Content Include="Waves\Windows Navigation Start.wav" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

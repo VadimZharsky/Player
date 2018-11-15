@@ -6,9 +6,13 @@ using Player.Properties;
 
 namespace Player
 {
+    public delegate void PlayerHandler(string Message);
 
     public class AudioPlayer : IPlayer
     {
+        public event PlayerHandler playerStarted;
+        public event PlayerHandler songStarted;
+        public event PlayerHandler songListChanged;
         public List<Song> songsToPlay = new List<Song>();
         private bool playOrNot = false;
         public bool isLocked { get; set; }
@@ -25,6 +29,11 @@ namespace Player
                 else { numItem = value; }
             }
         }
+        public AudioPlayer()
+        {
+
+            playerStarted?.Invoke("PlayerStarted");
+        }
         public bool IsLocked
         {
             get { return isLocked; }
@@ -33,11 +42,12 @@ namespace Player
 
         public override void SaveAs()
         {
-            
+
             songsToPlay.GetXMLFromObject();
         }
         public override void Load()
         {
+            songListChanged?.Invoke("songList was been loaded");
             List<Song> deserialized = new List<Song>();
             songsToPlay.Clear();
             songsToPlay = deserialized.GetAnObjFromXML();
@@ -49,15 +59,17 @@ namespace Player
             {
                 if (songsToPlay.Count > 0)
                 {
+                    songStarted?.Invoke($"{songsToPlay[numItem].itemName} is playing now");
                     playOrNot = true;
-                    actualSkin.NewScreen();
+                    //actualSkin.NewScreen();
                     actualSkin.Render(songsToPlay[numItem].itemName);
                     actualSkin.Render(GetData(songsToPlay[numItem]));
                 }
-                actualSkin.Render("There is no songs");
+                else { actualSkin.Render("There is no songs"); }
+
             }
-                
-            
+
+
         }
 
         public override void PlayNext()
@@ -73,6 +85,7 @@ namespace Player
         }
         public override void Clear()
         {
+            songListChanged?.Invoke("songList was been deleted");
             songsToPlay.Clear();
         }
 
@@ -110,7 +123,7 @@ namespace Player
             if (songsToPlay.Count > 0)
             {
                 songsToPlay = songsToPlay.ShuffleList();
-                
+                songListChanged?.Invoke("songList was been changed");
             }
             else { NoSongs(); }
         }
@@ -139,18 +152,23 @@ namespace Player
                         songsToPlay = songsToPlay.SongsToPlay(5);
                         break;
                 }
+                songListChanged?.Invoke("songList was been changed");
             }
             else { NoSongs(); }
         }
 
-        public override void UploadItems<T>(T item)  
+        public override void UploadItems<T>(T item)
         {
             if (item is Song)
+            {
                 songsToPlay.Add(item as Song);
+                songListChanged?.Invoke("songList was been changed");
+            }
+
         }
         Tuple<string, string, string, string, string, string, string> GetData(Song songToPlay)
         {
-            
+
             var (_, artist, album, year, genre, lyrics, duration) = songToPlay;
             string inminutes = Convert.ToString((int)duration / 60);
             string inseconds = Convert.ToString((int)duration % 60);
