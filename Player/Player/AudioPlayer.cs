@@ -42,7 +42,7 @@ namespace Player
 
         public override void SaveAs()
         {
-            
+
             songsToPlay.GetXMLFromObject();
         }
         public override void Load()
@@ -66,10 +66,10 @@ namespace Player
                     actualSkin.Render(GetData(songsToPlay[numItem]));
                 }
                 else { actualSkin.Render("There is no songs"); }
-                
+
             }
-                
-            
+
+
         }
 
         public override void PlayNext()
@@ -157,18 +157,18 @@ namespace Player
             else { NoSongs(); }
         }
 
-        public override void UploadItems<T>(T item)  
+        public override void UploadItems<T>(T item)
         {
             if (item is Song)
             {
                 songsToPlay.Add(item as Song);
                 songListChanged?.Invoke("songList was been changed");
             }
-                
+
         }
         Tuple<string, string, string, string, string, string, string> GetData(Song songToPlay)
         {
-            
+
             var (_, artist, album, year, genre, lyrics, duration) = songToPlay;
             string inminutes = Convert.ToString((int)duration / 60);
             string inseconds = Convert.ToString((int)duration % 60);
