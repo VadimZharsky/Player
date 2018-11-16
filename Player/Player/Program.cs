@@ -77,7 +77,9 @@ namespace Player
                     }
                 case "exit":
                     {
-                        Console.ReadKey();
+                        wavPlayer.Stop();
+                        Console.WriteLine("\n\n\n|||  Have a beautiful day:-)  |||");
+                        Thread.Sleep(3000);
                         Environment.Exit(0);
                         break;
                     }

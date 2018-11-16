@@ -77,7 +77,7 @@ namespace Player.Skin
         {
             Random rnd = new Random();
             Console.BackgroundColor = (ConsoleColor)rnd.Next(1, 16);
-            Console.WriteLine(text);
+            Console.WriteLine($"*** *** ***\n{text}\n``` ``` ```");
         }
 
         public void Render(Tuple<string, string, string, string, string, string, string> tuple)

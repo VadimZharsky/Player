@@ -88,16 +88,22 @@ namespace Player
             loadedList.Clear();
             DirectoryInfo dir = new DirectoryInfo(path);
             Song song = null;
-            List<FileInfo> files = new List<FileInfo>(dir.GetFiles("*.wav"));
-            foreach (FileInfo file in files)
+            try
             {
-                song = new Song();
-                song.itemName = Path.GetFileNameWithoutExtension(file.FullName);
-                song.path = Path.GetDirectoryName(file.FullName);
-                song.extension = Path.GetExtension(file.FullName);
-                loadedList.Add(song);
+                List<FileInfo> files = new List<FileInfo>(dir.GetFiles("*.wav"));
+                foreach (FileInfo file in files)
+                {
+                    song = new Song();
+                    song.itemName = Path.GetFileNameWithoutExtension(file.FullName);
+                    song.path = Path.GetDirectoryName(file.FullName);
+                    song.extension = Path.GetExtension(file.FullName);
+                    loadedList.Add(song);
+                }
+                songListChanged?.Invoke("New folder was uploaded");
             }
-            songListChanged?.Invoke("New folder was uploaded");
+            catch(DirectoryNotFoundException e)
+            { songListChanged?.Invoke("Directory doesn't exist"); }
+            
         }
         public  void SaveAsXML()
         {
