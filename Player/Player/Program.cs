@@ -10,67 +10,98 @@ namespace Player
 {
     static class Program
     {
-        static void Main(string[] args)
-        {    
-            List<Song> uploaded = new List<Song>();
-            UploadSongs(@"data", ref uploaded);            
-            foreach (Song song in uploaded)
-            {
-                Console.WriteLine(song.extension);
-            }
-            WavPlayer.Play(uploaded);
-
-            //var actualSkin = SkinsMaker();
-            //AudioPlayer audio = new AudioPlayer();
-            //audio.actualSkin = actualSkin;
-            //PlayerProperties prop = new PlayerProperties();
-            //audio.properties = prop;
-            ////audio.properties.LockPlay();
-            //audio.ShuffleItems();
-            //for (int i = 0; i < songs.Count; i++)
-            //{
-            //    audio.Play(i);
-            //    //Thread.Sleep(1000);
-            //}
-            //audio.SaveAs();
-            //audio.PlayNext();
-            //audio.Load();
-            //audio.Clear();
-            //for (int i = 0; i < songs.Count; i++)
-            //{
-
-            //    audio.Play(i);
-            //    Thread.Sleep(1000);
-            //}
-            Console.ReadKey();
-        }
-        public static void getMessage(string str)
+         static void Main(string[] args)
         {
-            Console.WriteLine(str);
+            PlayerStart();
+            Console.ReadLine();
+        }
+        public static void PlayerStart()
+        {
+            var wavPlayer = new WavPlayer();
+            var actualSkin = SkinsMaker();
+            var properties = new PlayerProperties();
+            var visualiser = new Visualizer(actualSkin, wavPlayer, properties);
+            properties.Volume = 50;
+            wavPlayer.actualSkin = actualSkin;
+            wavPlayer.properties = properties;
+            Management(properties, wavPlayer);
         }
 
-        
+        private static void Management(PlayerProperties properties, WavPlayer wavPlayer)
+        {
+            string cmd = Convert.ToString(Console.ReadLine());
+            Switcher(cmd, properties, wavPlayer);
+            Management(properties, wavPlayer);
+        }
+
+        private async static void Switcher(string cmd, PlayerProperties properties, WavPlayer wavPlayer)
+        {
+            switch (cmd)
+            {
+                case "lock":
+                    {
+                        properties.LockPlay();
+                        break;
+                    }
+                case "unlock":
+                    {
+                        properties.UnlockPlay();
+                        break;
+                    }
+                case "play":
+                    {
+                        await wavPlayer.PlayWav();
+                        break;
+                    }
+                case "stop":
+                    {
+                        wavPlayer.Stop();
+                        break;
+                    }
+                case "setvolume":
+                    {
+                        double temp = Convert.ToDouble(Console.ReadLine());
+                        properties.Volume = temp;
+
+                        break;
+                    }
+                case "volumeup":
+                    {
+                        properties.VolumeUp();
+                        break;
+                    }
+                case "volumedown":
+                    {
+                        properties.VolumeDown();
+                        break;
+                    }
+                case "exit":
+                    {
+                        Console.ReadKey();
+                        Environment.Exit(0);
+                        break;
+                    }
+                case "loadFolder":
+                    {
+                        wavPlayer.LoadFolder(@"data");
+                        break;
+                    }
+                case "shuffle":
+                    {
+                        wavPlayer.ShuffleItems();
+                        break;
+                    }
+                default:
+                    Console.WriteLine("Not authorized command");
+                    break;
+            }
+        }
         private static ISkin SkinsMaker()
         {
             var rndSkin = new RandomColorSkin();
             var colorSkin = new ColorSkin() { SetColor = 3 };
             var classicSkin = new ClassicSkin();
             return rndSkin;
-        }
-
-        public static void UploadSongs(string path, ref List<Song> uploaded)
-        {
-            DirectoryInfo dir = new DirectoryInfo(path);
-            Song song = null;
-            List<FileInfo> files = new List<FileInfo>(dir.GetFiles("*.wav"));
-            foreach (FileInfo file in files)
-            {
-                song = new Song();
-                song.itemName = Path.GetFileNameWithoutExtension(file.FullName);
-                song.path = Path.GetDirectoryName(file.FullName);
-                song.extension = Path.GetExtension(file.FullName);
-                uploaded.Add(song);
-            }
         }
     }
 }

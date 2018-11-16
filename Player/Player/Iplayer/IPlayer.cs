@@ -8,7 +8,7 @@ namespace Player
     {
         public ISkin actualSkin { get; set; }
         public PlayerProperties properties { get; set; }
-        private bool playOrNot;
+
         bool isLocked { get; set; }
         List<Item> items = new List<Item>();
         public abstract void UploadItems<T>(T item) where T : Item;
@@ -22,9 +22,5 @@ namespace Player
         public abstract void SaveAs();
         public abstract void Load();
 
-        public virtual void Stop()
-        {
-            playOrNot = false;
-        }
     }
 }

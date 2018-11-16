@@ -8,31 +8,28 @@ using Player.Skin;
 using Player.Properties;
 namespace Player
 {
-        class Visualizer
+    class Visualizer   
+    {
+        ISkin actualSkin;
+        WavPlayer wav;
+        PlayerProperties properties;
+        public Visualizer(ISkin actualSkin, WavPlayer wav, PlayerProperties properties)
         {
-            ISkin actualSkin;
-            AudioPlayer player;
-            PlayerProperties properties;
-            public Visualizer(ISkin actualSkin, AudioPlayer player, PlayerProperties properties)
-            {
-                this.actualSkin = actualSkin;
-                this.player = player;
-                this.properties = properties;
-                player.actualSkin = this.actualSkin;
-                player.properties = this.properties;
-                player.playerStarted += Messenger;
-                player.songListChanged += Messenger;
-                player.songStarted += Messenger;
-                player.properties.playerLocked += Messenger;
-                player.properties.volumeChanged += Messenger;
-            
-
-            }
-            private static void Messenger(string mess)
-            {
-                Console.WriteLine(mess);
-            }
+            this.actualSkin = actualSkin;
+            this.wav = wav;
+            this.properties = properties;
+            actualSkin = this.actualSkin;
+            properties = this.properties;
+            wav.playerStarted += Messenger;
+            wav.songListChanged += Messenger;
+            properties.playerLocked += Messenger;
+            properties.volumeChanged += Messenger;
         }
+        private  void Messenger(string mess)
+        {
+            actualSkin.Render(mess);
+        }
+     }
 }
 
 
